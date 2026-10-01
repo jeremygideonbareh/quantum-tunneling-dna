@@ -3,7 +3,7 @@
 ## Fingerprint (fixed in advance)
 Per pyrimidine-centred context, from capped 3-bp B-DNA clusters (flanking pairs and C1′ caps frozen), GFN2-xTB, relaxed scan along X = ξ₁ + ξ₂:
 
-- **Primary:** forward tautomerisation rate proxy, `F = ln κ_sudden − ΔE‡ / RT` (T = 310 K).
+- **Primary:** forward tautomerisation rate proxy, `F = ln κ_sudden − ΔE‡ / RT` (T = 310 K). If the tautomer is not a minimum, κ is undefined; set κ = 1 and keep the context (flagged).
 - Secondary: (a) tautomer population `−ΔE / RT`; (b) reverse barrier ΔE‡_rev, i.e. tautomer survival; (c) the same three quantities in ALPB water.
 - If the rank correlation between xTB and DFT values across contexts is below 0.7, the DFT values replace the xTB ones (decided before looking at mutation data).
 
@@ -18,7 +18,7 @@ Per-site transition rate = transitions in context ÷ occurrences of that context
 - **H5 (added value, 5-mers).** Adding F to a baseline (local GC/stability + DNAkmerQM PC1–3 + Al-Hashimi G•T⁻ for T-centred contexts) improves leave-one-out R² by more than 0.02 with a positive coefficient.
 - **H6 (mechanism check).** The 3′ neighbour explains more of the variance in F than the 5′ neighbour (two-way ANOVA on the 16 contexts per centre).
 
-Holm correction across H1–H3 × datasets. A null result is reported with 95% CIs on ρ.
+Holm correction across H1–H3 × datasets. Analysis code is fixed in advance: `scripts/preregistered_tests.py`, which will not run without the OSF URL. Baselines for H5: `data/processed/dnakmerqm_B_k{3,5}.csv` (PC1–3) and `qtdna.stability.stacking_dg` (SantaLucia 1998 nearest-neighbour ΔG₃₇). A null result is reported with 95% CIs on ρ.
 
 ## Analyses already run before registration (disclosed for transparency)
 On 2026-10-01 we computed (i) per-site context rates for all datasets, (ii) correlations **between datasets** (E. coli vs COSMIC) and (iii) correlations between the **Al-Hashimi G•T⁻ baseline** and the outcomes. We did **not** correlate any proton-transfer fingerprint with any mutation outcome. Fingerprint values for some contexts were computed, but they were not compared with mutation data.

@@ -68,22 +68,26 @@ There are **512** pyrimidine-centred 5-mers, not about 1,000. Training ML on 32 
 
 ### Phase 1, weeks 1–4 (October)
 **Jeremy**
-- [x] Repo, Python environment, GFN2-xTB via `tblite` (done 2026-10-01)
+- [x] Repo, Python environment, GFN2-xTB via `tblite` (2026-10-01)
 - [x] First end-to-end calculation: single G:C pair, DPT scan, ZPE, WKB κ (`scripts/smoke_test_gc_scan.py`)
-- [x] Context enumeration and per-site mutation-rate counter, with unit tests
-- [ ] **This week:** register for ORCA (academic) and 3DNA. Both need forum sign-up and take days
-- [ ] Repeat the smoke test with the `xtb` CLI and ALPB water; tighten convergence (2 imaginary modes remain at the tautomer, probably methyl rotors)
-- [ ] Build the A:T pair (A\*:T\*: N6–H→O4, N3–H→N1) and run the same scan
-- [ ] Build one 3-bp B-DNA cluster (3DNA `fiber -b`), add freezing, and run one context end to end
-- [ ] Run `scripts/download_data.sh` and load COSMIC v3.4 and DNAkmerQM
-- [ ] DFT single points (ORCA) on the smoke-test reactant, tautomer and maximum to get the first xTB-vs-DFT number
+- [x] Context enumeration, per-site mutation-rate counter, stability baseline, with unit tests
+- [x] ~~Register for ORCA and 3DNA~~ **No longer needed:** PySCF (pip) replaces ORCA and PyMOL `fnab` replaces 3DNA
+- [x] Capped 3-bp B-DNA clusters for all 32 contexts (`structures/k3/`), frozen-frame DPT scans for both G:C and A:T centres (`scripts/run_fingerprint.py`)
+- [x] Data: E. coli (Jago 2026, 120k mutations), COSMIC v3.4 + GRCh38/yeast context counts, Al-Hashimi fingerprints, DNAkmerQM, all fetched by `scripts/download_data.sh`
+- [x] Per-site rate tables: `data/processed/ecoli_rates_k{3,5}.csv`, `cosmic_sitewise_k3.csv`; baselines `dnakmerqm_B_k{3,5}.csv`
+- [x] DFT (B3LYP-D3/def2-SVP, PySCF) on the smoke-test scan path (`scripts/dft_check_scan.py`)
+- [x] Pre-registered analysis code written and locked behind the OSF URL (`scripts/preregistered_tests.py`)
+- [ ] Finish the 32-context gas-phase run, then repeat in ALPB water (`--env water`)
+- [ ] DFT single points at reactant / maximum / tautomer for all 32 clusters (about 100 atoms each; needs the HPC allocation or about 2 days locally at def2-SVP)
+- [ ] 5-mer clusters (512) after the HPC reply
+- [ ] Tighten tautomer convergence (2 imaginary modes in the single-pair smoke test)
 
 **Nazia**
-- [ ] Read Lagator PNAS 2026 first, then Al-Hashimi 2026 (answer the two questions in §1), Soler-Polo 2019 and Slocombe ×3
-- [ ] 2-page "known / missing" summary, which must answer Soler-Polo
-- [ ] Final dataset list with exact files (`docs/data_sources.md`)
+- [ ] Read Jago 2026 first, then Al-Hashimi 2026 (confirm the MMR-signature question in `literature.md`), Gheorghiu 2020, Soler-Polo 2019 and Slocombe ×3
+- [ ] Edit `docs/known_vs_missing.md` (drafted) into the 2-page summary; verify each claim
+- [ ] Get the Lujan 2014 yeast tables and the Zou 2021 data link (`needs_your_login.md` #4–5)
 - [ ] Confounder rules: CpG, strand, local stability or GC, repeats, transcription
-- [ ] **Draft `docs/preregistration.md` by the end of October** and post it on OSF before any correlation is run
+- [ ] **Finish `docs/preregistration.md` (v2 drafted) and post it on OSF** before anyone runs `preregistered_tests.py`
 
 **Handoff, end of October:** dataset list + confounder rules + pre-registration → Jeremy.
 
