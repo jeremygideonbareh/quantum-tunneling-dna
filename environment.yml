@@ -16,6 +16,8 @@ dependencies:
   - pysam
   - pytest
   - pip
-# Not on conda (register and install by hand, see docs/research_plan.md):
-#   ORCA 6  - https://orcaforum.kofo.mpg.de  (free for academic use)
-#   3DNA    - https://x3dna.org               (fiber / rebuild for B-DNA models)
+  - pip:
+      - pyscf>=2.6          # DFT checks (replaces ORCA; no registration)
+      - pyscf-dispersion    # D3(BJ)
+# B-DNA building uses PyMOL fnab in a separate env (its wheel needs numpy<2):
+#   python -m venv .pymolenv && .pymolenv/bin/pip install pymol-open-source-whl "numpy<2"

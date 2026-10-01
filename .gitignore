@@ -11,3 +11,5 @@ xtbrestart
 xtbtopo.mol
 charges
 wbo
+results/fingerprint_*/*_scan.xyz
+.pymolenv/

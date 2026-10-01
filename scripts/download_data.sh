@@ -1,39 +1,51 @@
 #!/usr/bin/env bash
-# Fetch the public inputs into data/raw/. Re-runnable; skips files already present.
-# Usage: bash scripts/download_data.sh [--with-roulette]
+# Fetch the public inputs into data/raw/. Re-runnable; skips what is already present.
+# Everything here comes from GitHub or PyPI, so it works even on restricted networks.
+#   bash scripts/download_data.sh
 set -euo pipefail
 cd "$(dirname "$0")/../data/raw"
 
-fetch() {  # url outfile
-  [ -s "$2" ] && { echo "have $2"; return; }
-  echo "get  $2"; curl -fL --retry 3 -o "$2.part" "$1" && mv "$2.part" "$2"
+clone() {  # repo dir
+  [ -d "$2" ] && { echo "have $2"; return; }
+  git clone --depth 1 "https://github.com/$1.git" "$2" && rm -rf "$2/.git"
 }
 
-# COSMIC SBS v3.4 reference signatures (GRCh38). If the URL has moved, download
-# by hand from https://cancer.sanger.ac.uk/signatures/downloads/
-fetch https://cog.sanger.ac.uk/cosmic-signatures-production/documents/COSMIC_v3.4_SBS_GRCh38.txt \
-      COSMIC_v3.4_SBS_GRCh38.txt
+# E. coli: Jago et al. PNAS 2026 compilation (120k MA mutations) + MG1655 genome. GPL-3.
+clone Lagator-Group/extended-sequence-context extended-sequence-context
 
-# DNAkmerQM (Masuda & Sahakyan 2024): QM features for all 7-mers, B/A/Z DNA. CC-BY-4.0.
-[ -d DNAkmerQM ] || git clone --depth 1 https://github.com/SahakyanLab/DNAkmerQM.git
+# Al-Hashimi lab conformational fingerprints (Szekely et al. Nat Commun 2026).
+clone alhashimilab/DNA-conformational-fingerprinting alhashimi-repo
+mkdir -p alhashimi
+cp alhashimi-repo/Mutational-Signatures-JSD/JSD-python/Input-files/conf-sig-input-files-for-python-JSDs/*.csv alhashimi/
 
-# Reference genomes for opportunity counts
-fetch "https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/005/845/GCF_000005845.2_ASM584v2/GCF_000005845.2_ASM584v2_genomic.fna.gz" \
-      ecoli_MG1655.fna.gz
-fetch "https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/146/045/GCF_000146045.2_R64/GCF_000146045.2_R64_genomic.fna.gz" \
-      yeast_S288C_R64.fna.gz
+# DNAkmerQM (Masuda & Sahakyan 2024): QM features for all 6/7-mers. CC-BY-4.0. ~220 MB.
+clone SahakyanLab/DNAkmerQM DNAkmerQM
 
-# Roulette germline rates (Seplyarskiy et al. 2023): per-chromosome VCFs, very large.
-# Check sizes on http://genetics.bwh.harvard.edu/downloads/Vova/Roulette/ before pulling.
-if [[ "${1:-}" == "--with-roulette" ]]; then
-  mkdir -p roulette
-  echo "Download the per-chromosome files listed at the URL above into data/raw/roulette/"
+# COSMIC v3.4 signatures + genome context counts, bundled in SigProfiler wheels on PyPI.
+if [ ! -s cosmic/COSMIC_v3.4_SBS_GRCh38.txt ]; then
+  tmp=$(mktemp -d)
+  pip download -q --no-deps -d "$tmp" "SigProfilerAssignment==1.1.5" "SigProfilerMatrixGenerator==1.3.6"
+  mkdir -p cosmic
+  python - "$tmp" <<'EOF'
+import sys, zipfile, glob, os
+tmp = sys.argv[1]
+want = {
+    "Reference_Signatures/GRCh38/COSMIC_v3.4_SBS_GRCh38.txt",
+    "context_distributions/context_counts_GRCh38_96.csv",
+    "context_distributions/context_counts_GRCh38_1536.csv",
+    "context_distributions/context_counts_yeast_96.csv",
+    "context_distributions/context_counts_yeast_1536.csv",
+}
+for whl in glob.glob(os.path.join(tmp, "*.whl")):
+    with zipfile.ZipFile(whl) as z:
+        for n in z.namelist():
+            if any(n.endswith(w) for w in want):
+                open(os.path.join("cosmic", os.path.basename(n)), "wb").write(z.read(n))
+                print("got ", os.path.basename(n))
+EOF
+  rm -rf "$tmp"
 fi
 
-# Not scriptable (supplementary tables; Nazia confirms exact files in Phase 1):
-#   Foster et al. 2018 Genetics      - E. coli MMR-defective MA mutations
-#   Lujan et al. 2014 Genome Res     - yeast pol/msh2 mutations
-#   Zou et al. 2021 Nature Cancer    - human iPSC repair-knockout mutations
-#   Hasenauer et al. 2025 NAR        - E. coli MutS/MutL ChIP-seq hotspots (GEO)
-#   Lagator lab, PNAS 2026           - 100k+ E. coli MA mutations, 32 experiments
-echo "done. See docs/data_sources.md for the manual downloads."
+# Not scriptable from here (journal supplementary files; see docs/needs_your_login.md):
+#   Lujan 2014 (yeast), Zou 2021 (human iPSC), Hasenauer 2025 (GEO), Garushyants 2024.
+echo "done."

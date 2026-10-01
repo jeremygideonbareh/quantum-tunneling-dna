@@ -4,31 +4,43 @@
 
 Jeremy Bareh (computation) · Nazia (biology/research). Target: bioRxiv by March 2027.
 
-- **Plan (read first):** [`docs/research_plan.md`](docs/research_plan.md): literature check, five changes to v1, week-by-week tasks
-- Pre-registration draft: [`docs/preregistration.md`](docs/preregistration.md)
-- Data: [`docs/data_sources.md`](docs/data_sources.md) · Papers: [`docs/literature.md`](docs/literature.md)
+**Start here:** [`docs/research_plan.md`](docs/research_plan.md) (plan and status) · [`docs/needs_your_login.md`](docs/needs_your_login.md) (manual to-dos)
+
+| Doc | What it is |
+|---|---|
+| [`known_vs_missing.md`](docs/known_vs_missing.md) | Literature summary / intro draft |
+| [`preregistration.md`](docs/preregistration.md) | Hypotheses to post on OSF **before** fingerprint-vs-mutation tests |
+| [`data_sources.md`](docs/data_sources.md) | Every dataset, its status and how to fetch it |
+| [`outreach_emails.md`](docs/outreach_emails.md), [`one_page_summary.md`](docs/one_page_summary.md) | October emails + attachment |
+| [`literature.md`](docs/literature.md) | Annotated references |
 
 ## Setup
 ```bash
-conda env create -f environment.yml && conda activate qtdna
-pip install -e ".[dev]"
+conda env create -f environment.yml && conda activate qtdna && pip install -e ".[dev,dft]"
+python -m venv .pymolenv && .pymolenv/bin/pip install pymol-open-source-whl "numpy<2"   # B-DNA builder
 pytest
 ```
-`pip install -e ".[dev]"` alone also works (it installs `tblite` for GFN2-xTB). ORCA and 3DNA need free academic registration.
 
-## What runs today
+## Pipeline
 ```bash
-python scripts/smoke_test_gc_scan.py --out results/smoke_gc   # ~1-2 min on 4 cores
-bash scripts/download_data.sh                                  # COSMIC, DNAkmerQM, genomes
+bash scripts/download_data.sh                         # E. coli MA data, COSMIC, Al-Hashimi, DNAkmerQM (GitHub/PyPI only)
+python scripts/ecoli_context_rates.py                 # -> data/processed/ecoli_rates_k{3,5}.csv
+python scripts/cosmic_sitewise_rates.py               # -> data/processed/cosmic_sitewise_k3.csv
+.pymolenv/bin/python scripts/build_bdna_clusters.py --k 3   # -> structures/k3/*.pdb (32 capped trimers)
+python scripts/run_fingerprint.py --k 3 --env gas     # xTB DPT scans, ~5 min/context, resumable
+python scripts/run_fingerprint.py --k 3 --env water   # same in ALPB water
+python scripts/dft_check_scan.py results/smoke_gc     # DFT (PySCF) on an xTB scan
+python scripts/smoke_test_gc_scan.py                  # single G:C pair sanity test
 ```
-The smoke test builds a methyl-capped G:C pair, optimises G:C and G\*:C\*, scans the double proton transfer, and reports the barrier, ZPE and WKB tunnelling factor. Result so far: G\*:C\* at +10.1 kcal/mol, barrier 12.5 kcal/mol, reverse barrier 2.5 kcal/mol (GFN2-xTB, gas phase; a pipeline check, not a result).
 
 ## Layout
 ```
-src/qtdna/contexts.py    32 trinucleotide / 512 pentanucleotide contexts, CpG flags, SBS-96 labels
-src/qtdna/basepair.py    builds a methyl-capped Watson-Crick G:C pair (no external tools)
+src/qtdna/contexts.py    32 / 512 pyrimidine-centred contexts, CpG flags, SBS-96 labels
+src/qtdna/mutations.py   per-context transition counts / genome opportunity -> per-site rate
+src/qtdna/scan.py        DPT scan of the central pair in a frozen B-DNA cluster -> fingerprint
 src/qtdna/tunneling.py   Wigner, Skodje-Truhlar, WKB tunnelling factors
-src/qtdna/mutations.py   per-context transition counts / opportunity -> per-site rate
-scripts/                 smoke test, data download
-results/smoke_gc/        first calculation outputs
+src/qtdna/basepair.py    standalone methyl-capped G:C pair (smoke test)
+structures/k3/           32 capped 3-bp B-DNA clusters (PyMOL fnab)
+data/processed/          per-site rate tables (E. coli, COSMIC)
+results/                 smoke test, fingerprint tables, DFT checks
 ```
