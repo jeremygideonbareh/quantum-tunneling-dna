@@ -1,0 +1,21 @@
+# conda env create -f environment.yml && conda activate qtdna && pip install -e ".[dev]"
+name: qtdna
+channels: [conda-forge]
+dependencies:
+  - python=3.11
+  - numpy
+  - pandas
+  - scipy
+  - scikit-learn
+  - matplotlib
+  - ase>=3.23
+  - tblite-python      # GFN2-xTB as an ASE calculator
+  - xtb                # xtb CLI: ALPB/GBSA implicit solvent, --scan, --hess
+  - rdkit
+  - pyfaidx            # random access to the human genome
+  - pysam
+  - pytest
+  - pip
+# Not on conda (register and install by hand, see docs/research_plan.md):
+#   ORCA 6  - https://orcaforum.kofo.mpg.de  (free for academic use)
+#   3DNA    - https://x3dna.org               (fiber / rebuild for B-DNA models)

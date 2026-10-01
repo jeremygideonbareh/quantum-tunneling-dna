@@ -1,0 +1,20 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "qtdna"
+version = "0.1.0"
+description = "Sequence-context proton-tunnelling fingerprints vs. replication-error mutation spectra"
+requires-python = ">=3.10"
+dependencies = ["numpy", "pandas", "ase>=3.23", "tblite>=0.4", "rdkit"]
+
+[project.optional-dependencies]
+dev = ["pytest"]
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+pythonpath = ["src"]
+testpaths = ["tests"]
