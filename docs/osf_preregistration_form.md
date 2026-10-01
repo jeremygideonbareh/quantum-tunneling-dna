@@ -2,7 +2,15 @@
 
 Use osf.io → Registries → **OSF Preregistration** template. Each heading below is one field in that form, in order. Paste the text under it.
 
-**Before you submit, decide the one open item:** the H2 choice (see "Hypotheses"). Everything else is final unless Nazia changes it.
+Final version: H2 = option A (chosen by the authors, 1 Oct 2026).
+
+**How to post (about 15 minutes):**
+1. Go to osf.io, sign up or log in, and click **Create new project**. Title: the title below. Add Nazia as a contributor (Contributors tab).
+2. In the project, go to **Registrations** → **New registration** → template **"OSF Preregistration"**.
+3. Paste each section below into the field with the same name. Leave fields not listed here blank.
+4. Under files or supplements, attach `docs/preregistration.md` and link the GitHub repo.
+5. Choose **"Make registration public immediately"** (or an embargo of up to 4 years if you'd rather keep it private until the preprint). Then click **Register**. Nazia must approve it by email if she is a contributor.
+6. Copy the registration URL (osf.io/xxxxx) and send it to Claude.
 
 ---
 
@@ -14,11 +22,8 @@ Replication errors (C>T and T>C transitions) occur at very different rates in di
 
 ## Hypotheses
 - **H1 (primary).** Across the 16 C-centred contexts, the fingerprint F correlates positively with the per-site C>T rate in *E. coli* MMR-deficient, proofreading-proficient mutation-accumulation lines.
-- **H2.** ⚠ **Choose one before submitting** (see `docs/research_plan.md` §4b; A\*:T\* is never a stable tautomer in our calculations):
-  - **Option A (recommended):** across the 16 T-centred contexts, the energy at the half-transfer point of the A:T scan (X = 0, single-proton-transfer region) correlates *negatively* with the per-site T>C rate. *Rationale:* this targets the route the A:T pair can actually take, and is directional.
-  - Option B: as H1, for F of the A:T scan vs T>C (positive). This tests the pure double-proton-transfer mechanism; we expect a weak result because no tautomer well exists.
-  - Option C: drop H2 for A:T and report it as exploratory only.
-- **H3 (replication).** The H1 (and H2, if kept) relationships also hold in yeast *msh2Δ* lines (Lujan et al. 2014) and in human MMR-deficiency signatures SBS6, SBS15, SBS21, SBS26 and SBS44 (COSMIC v3.4, normalised per site), combined by Stouffer's method.
+- **H2.** Across the 16 T-centred contexts, the energy at the half-transfer point of the A:T proton-transfer scan (X = 0, the single-proton-transfer region) correlates **negatively** with the per-site T>C rate in the same *E. coli* lines. Rationale: in our calculations A\*:T\* is never a stable double-proton-transfer tautomer, so the test targets the route the A:T pair can actually take.
+- **H3 (replication).** The H1 and H2 relationships also hold in yeast *msh2Δ* lines (Lujan et al. 2014) and in human MMR-deficiency signatures SBS6, SBS15, SBS21, SBS26 and SBS44 (COSMIC v3.4, normalised per site), combined by Stouffer's method.
 - **H4 (no directional prediction).** Same tests in proofreading-deficient data (*E. coli* mutD5 lines; COSMIC SBS10a–d), reported separately.
 - **H5 (added value, 5-mers).** Adding F to a baseline model (nearest-neighbour duplex stability, DNAkmerQM PC1–3, and Al-Hashimi G•T⁻ for T-centred contexts) improves leave-one-out R² by more than 0.02, with a positive coefficient.
 - **H6.** The fingerprint varies more with the 3′ neighbour than with the 5′ neighbour (two-way ANOVA within each centre).
@@ -60,7 +65,8 @@ Not applicable (all contexts, all listed datasets).
 None.
 
 ## Measured variables
-- **Predictor F** = ln κ_sudden − ΔE‡/RT at 310 K, from the gas-phase xTB scan. If no tautomer well is deeper than RT, κ = 1.
+- **Predictor F** (C-centred, H1) = ln κ_sudden − ΔE‡/RT at 310 K, from the gas-phase xTB scan. If no tautomer well is deeper than RT, κ = 1.
+- **Predictor for H2** (T-centred) = −E_half, the negated scan energy at X = 0 (so that, as for F, larger means more errors).
 - Secondary predictors: tautomer energy, reverse barrier, the same quantities in ALPB water, and DFT-corrected values.
 - **Outcomes:** per-site C>T (C-centred) and T>C (T-centred) rates per dataset.
 
@@ -86,4 +92,4 @@ Contexts with zero genome occurrences are not possible at the 3-mer level. At th
 Leading- vs lagging-strand-specific rates; extended context (±6 bp); the G•T wobble tautomer route; strand-separated (stretched) pair models.
 
 ## Other
-Code and processed data: github.com/jeremygideonbareh/quantum-tunneling-dna (Zenodo DOI at publication). Authors: Jeremy Bareh, Nazia [surname].
+Code and processed data: github.com/jeremygideonbareh/quantum-tunneling-dna (Zenodo DOI at publication). Authors: Jeremy Bareh, Nazia Sooting.

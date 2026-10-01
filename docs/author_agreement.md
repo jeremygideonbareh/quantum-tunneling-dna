@@ -3,7 +3,7 @@
 **Project:** Quantum tunnelling fingerprints of DNA sequence context
 **Date:** ____ October 2026
 
-1. **Author order:** Jeremy Bareh and Nazia [surname] are **equal-contribution first authors** (marked †). The name listed first will be ________ (decide by coin toss if needed). Both may list themselves first on their own CVs, with the † note.
+1. **Author order:** Jeremy Bareh and Nazia Sooting are **equal-contribution first authors** (marked †). The name listed first will be ________ (decide by coin toss if needed). Both may list themselves first on their own CVs, with the † note.
 2. **Contributions (CRediT):**
    - Jeremy: Methodology (computation), Software, Formal analysis, Data curation, Visualization, Writing (methods, computation).
    - Nazia: Conceptualization (biology), Investigation (literature, datasets), Validation (biological interpretation), Writing (introduction, discussion, abstract), Project administration (journal and submission).

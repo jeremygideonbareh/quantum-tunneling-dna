@@ -1,6 +1,6 @@
 # Outreach email drafts (October)
 
-Send from your own addresses. Attach `docs/pdf/one_page_summary.pdf` (ready; replace "Nazia [surname]" first, then re-export or ask Claude to). Keep each email under 200 words; busy people answer short emails.
+Send from your own addresses. Attach `docs/pdf/one_page_summary.pdf` (ready; replace "Nazia Sooting" first, then re-export or ask Claude to). Keep each email under 200 words; busy people answer short emails.
 
 ---
 
@@ -12,14 +12,14 @@ Send from your own addresses. Attach `docs/pdf/one_page_summary.pdf` (ready; rep
 >
 > Dear Dr Agashe,
 >
-> We are two students (Jeremy Bareh, computation; Nazia [surname], biology) working on a short research project: we compute a quantum-chemical "tunnelling fingerprint" (proton-transfer energetics of G:C and A:T pairs in each sequence context) and test whether it predicts where replication errors occur.
+> We are two students (Jeremy Bareh, computation; Nazia Sooting, biology) working on a short research project: we compute a quantum-chemical "tunnelling fingerprint" (proton-transfer energetics of G:C and A:T pairs in each sequence context) and test whether it predicts where replication errors occur.
 >
 > Using the Jago et al. (PNAS 2026) compilation of about 120,000 *E. coli* MA mutations, we find per-site transition rates in MMR-deficient lines vary up to 54-fold across trinucleotide contexts. The pattern also correlates with human MMR signatures (ρ ≈ 0.8 for SBS21). Your work on mutation bias and polymerase errors (Garushyants et al., GBE 2024) is very close to this question.
 >
 > Could we have 20 minutes of your time for feedback on our analysis plan (one page attached), especially on confounders in the MA data? We will pre-register our hypotheses before testing them.
 >
 > Thank you,
-> Jeremy Bareh and Nazia [surname]
+> Jeremy Bareh and Nazia Sooting
 
 ---
 
@@ -38,7 +38,7 @@ Send from your own addresses. Attach `docs/pdf/one_page_summary.pdf` (ready; rep
 > (2) Would you expect neighbouring pairs to shift the barrier enough to matter (in our gas-phase xTB clusters the G:C barrier spans 11.7–13.5 kcal/mol across the 16 contexts, and A\*:T\* is never a minimum)?
 >
 > One-page summary attached. Thank you for any pointers.
-> Jeremy Bareh and Nazia [surname]
+> Jeremy Bareh and Nazia Sooting
 
 ---
 
@@ -55,4 +55,4 @@ Send from your own addresses. Attach `docs/pdf/one_page_summary.pdf` (ready; rep
 > Could we meet for 15 minutes to ask whether our DFT protocol is sound, and whether a small allocation or a student account on your group's cluster would be possible? We would acknowledge your help, or offer co-authorship if you contribute substantively.
 >
 > Thank you,
-> Jeremy Bareh and Nazia [surname]
+> Jeremy Bareh and Nazia Sooting

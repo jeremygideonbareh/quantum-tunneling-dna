@@ -1,6 +1,6 @@
 # Does DNA sequence context change proton-tunnelling risk, and does that predict replication errors?
 
-**Jeremy Bareh** (computation) · **Nazia [surname]** (biology) · October 2026 · Bengaluru
+**Jeremy Bareh** (computation) · **Nazia Sooting** (biology) · October 2026 · Bengaluru
 
 **Question.** Replication errors (C>T and T>C transitions) are far more frequent in some sequence contexts than others. In mismatch-repair-deficient *E. coli*, per-site rates vary up to **54-fold** across trinucleotides, and the same context preferences appear in human MMR-deficient tumours (Spearman ρ up to 0.8 with SBS21). Löwdin's hypothesis says proton tunnelling inside base pairs creates rare tautomers that mispair. **Does the energetics of that tunnelling depend on neighbouring bases strongly enough to explain these context preferences?**
 

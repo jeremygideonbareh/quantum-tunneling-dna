@@ -12,7 +12,7 @@ Per-site transition rate = transitions in context ÷ occurrences of that context
 
 ## Hypotheses
 - **H1 (primary).** *E. coli* MMR-deficient, proofreading-proficient lines (Jago et al. 2026 compilation, group `proofreading(+) MMR(-)`): across the 16 C-centred contexts, F correlates positively with the C>T per-site rate. *E. coli* lacks CpG methylation, so all 16 are kept. One-sided Spearman, exact permutation p, α = 0.05.
-- **H2.** As H1 for the 16 T-centred contexts vs T>C.
+- **H2 (option A, chosen).** Across the 16 T-centred contexts, the half-transfer energy E_half (scan energy at X = 0) correlates negatively with the per-site T>C rate. Run with `preregistered_tests.py --h2 A`.
 - **H3 (replication).** H1/H2 in yeast msh2Δ (Lujan 2014) and human MMR signatures SBS6/15/21/26/44 (per-site normalised, the 4 CpG contexts excluded for C>T). Combine by Stouffer meta-analysis.
 - **H4 (proofreading).** Repeat in proofreading-deficient groups (*E. coli* mutD5; SBS10a–d), reported separately with no directional prediction.
 - **H5 (added value, 5-mers).** Adding F to a baseline (local GC/stability + DNAkmerQM PC1–3 + Al-Hashimi G•T⁻ for T-centred contexts) improves leave-one-out R² by more than 0.02 with a positive coefficient.
