@@ -7,6 +7,7 @@
 **Why now.** Physics papers argue for (Slocombe et al. 2022, 2023) and against (Soler-Polo 2019; Gheorghiu, Coveney 2020) a role for tautomers, but none tested sequence-resolved predictions against mutation data. Szekely, …, Al-Hashimi (Nat Commun 2026) fingerprinted a different rare state (anionic G•T⁻) across 16 contexts. It matched a chemotherapy signature (SBS11), not replication-error signatures.
 
 **Approach.**
+
 1. **Fingerprint:** for all 32 trinucleotide contexts, a 3-bp methyl-capped B-DNA cluster with the flanking pairs frozen. A relaxed double-proton-transfer scan (GFN2-xTB) gives the barrier, tautomer energy, reverse barrier, and WKB tunnelling factors in adiabatic and sudden limits. Validation: DFT (B3LYP-D3, PySCF) on the same paths. Extension: all 512 five-base contexts.
 2. **Outcomes:** per-site transition rates (counts ÷ genome occurrences) from 120,208 *E. coli* MA mutations (Jago et al. PNAS 2026; Foster 2018; Niccum 2018), yeast msh2Δ (Lujan 2014), human MMR knockouts (Zou 2021) and COSMIC MMR/POLE signatures.
 3. **Tests (pre-registered on OSF before any fingerprint–mutation comparison):** within-centre Spearman correlations, cross-species meta-analysis, and nested models against baselines (Al-Hashimi G•T⁻, DNAkmerQM QM features, duplex stability).

@@ -1,6 +1,6 @@
 # Outreach email drafts (October)
 
-Send from your own addresses. Attach `docs/one_page_summary.md` exported as a PDF. Keep each email under 200 words; busy people answer short emails.
+Send from your own addresses. Attach `docs/pdf/one_page_summary.pdf` (ready; replace "Nazia [surname]" first, then re-export or ask Claude to). Keep each email under 200 words; busy people answer short emails.
 
 ---
 
@@ -44,11 +44,11 @@ Send from your own addresses. Attach `docs/one_page_summary.md` exported as a PD
 
 ## 3. Local computational-chemistry professor (Bengaluru), for an HPC allocation and a DFT check
 
-**Who:** pick one faculty member in IISc's Solid State & Structural Chemistry Unit or JNCASR's Theoretical Sciences Unit whose page lists DFT or biomolecular simulation. Nazia: shortlist two and check their recent papers.
+**Suggested:** **Prof. Swapan K. Pati**, Theoretical Sciences Unit, JNCASR. He works on DFT and quantum chemistry, including transport and electronic structure of biomolecular systems, and the unit runs its own clusters. **Backup:** another faculty member of JNCASR TSU (Prof. Umesh Waghmare, DFT) or IISc SSCU's computational chemists (sscu.iisc.ac.in). Check his current page for an email address before sending.
 
 > **Subject:** Request: brief DFT advice and possible compute access for a student project on DNA proton transfer
 >
-> Dear Prof. [Name],
+> Dear Prof. Pati,
 >
 > We are students computing proton-transfer energetics of DNA base pairs in all sequence contexts, to test whether they explain context-dependent replication errors (one-page plan attached). Semiempirical (xTB) scans for 32 contexts already run on a laptop, and DFT single points (B3LYP-D3/def2-SVP, PySCF) work for single pairs. To validate at def2-TZVP and extend to 512 five-base contexts, we need a modest CPU allocation (about 5,000 core-hours).
 >

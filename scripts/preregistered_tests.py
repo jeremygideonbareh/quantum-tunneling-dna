@@ -64,12 +64,17 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--osf", required=True, help="OSF pre-registration URL (must exist first)")
     ap.add_argument("--env", default="gas")
+    ap.add_argument("--h2", choices=["A", "B"], required=True,
+                    help="A: T-centred predictor = -E_half (single-PT energy); B: F as for G:C")
     args = ap.parse_args()
     if not args.osf.startswith("https://osf.io/"):
         raise SystemExit("Post docs/preregistration.md on OSF first and pass its URL.")
 
     fp = pd.read_csv(f"results/fingerprint_k3_{args.env}.csv").set_index("context")
     fp["F"] = primary_feature(fp)
+    if args.h2 == "A":  # lower half-transfer energy -> more errors, so use -E_half
+        t = fp["centre"] == "T"
+        fp.loc[t, "F"] = -fp.loc[t, "E_half_kcal"]
     eco = pd.read_csv("data/processed/ecoli_rates_k3.csv")
     cos = pd.read_csv("data/processed/cosmic_sitewise_k3.csv")
 
@@ -98,7 +103,7 @@ def main():
     out = Path("results") / f"preregistered_{args.env}.csv"
     res.to_csv(out, index=False)
     print(res.to_string(index=False, float_format=lambda v: f"{v:.3g}"))
-    print(f"\nOSF registration: {args.osf}\nwrote {out}")
+    print(f"\nOSF registration: {args.osf} (H2 option {args.h2})\nwrote {out}")
 
 
 if __name__ == "__main__":

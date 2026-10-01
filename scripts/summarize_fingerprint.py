@@ -18,7 +18,7 @@ from qtdna.contexts import contexts
 
 KT = 0.0019872 * 310.0
 COLS = ["reaction_energy_kcal", "barrier_kcal", "reverse_barrier_kcal",
-        "kappa_adiabatic", "kappa_sudden", "F"]
+        "E_half_kcal", "kappa_adiabatic", "kappa_sudden", "F"]
 
 
 def main():
@@ -33,6 +33,8 @@ def main():
     df["well_deeper_than_RT"] = df["tautomer_is_minimum"] & (df["reverse_barrier_kcal"] > KT)
     kappa = df["kappa_sudden"].astype(float).fillna(1.0).where(df["well_deeper_than_RT"], 1.0)
     df["F"] = np.log(kappa) - df["barrier_kcal"] / KT
+    # energy at the half-transfer point X = 0 (single-proton-transfer region)
+    df["E_half_kcal"] = [float(np.interp(0.0, r["X"], r["profile_kcal"])) for r in rows]
     keep = ["centre", "env", "tautomer_is_minimum", "well_deeper_than_RT"] + COLS
     df[keep].sort_index().to_csv(d.parent / f"fingerprint_k{args.k}_{args.env}.csv")
 
