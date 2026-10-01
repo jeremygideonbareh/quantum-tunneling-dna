@@ -19,6 +19,7 @@ from ase.optimize import BFGS
 from .tunneling import mass_weighted_path, wkb_kappa
 
 EV_TO_KCAL = 23.0605
+MIN_XI_TRANSFERRED = 0.4  # Angstrom; xi > 0.4 means the proton clearly sits on the acceptor
 
 # (donor residue, donor atom, acceptor residue, acceptor atom); residues "pyr"/"pur"
 PROTONS = {
@@ -112,11 +113,17 @@ def dpt_scan(atoms, triples, frozen, make_calc, points=15, fmax=0.02):
         place_proton(taut, *t, -xi(atoms, *t))
     e_p = relax(taut, fmax)
     x_p = [xi(taut, *t) for t in triples]
+    # A real tautomer has both protons on the acceptor side. If the free
+    # optimisation slid back (or stalled half-way), there is no G*:C*/A*:T*
+    # minimum: scan to the mirror point X = -X_reactant instead and flag it.
+    found = min(x_p) > MIN_XI_TRANSFERRED
+    if not found:
+        x_p = [-x for x in x_r]
 
     combo = [[d, h, 1.0] for d, h, _ in triples] + [[h, a, -1.0] for _, h, a in triples]
     fracs = np.linspace(0.0, 1.0, points)
     energies, images = [e_r], [reactant]
-    for f in fracs[1:-1]:
+    for f in (fracs[1:-1] if found else fracs[1:]):
         targets = [(1 - f) * a + f * b for a, b in zip(x_r, x_p)]
         atoms.set_constraint()
         for t, x in zip(triples, targets):
@@ -125,12 +132,13 @@ def dpt_scan(atoms, triples, frozen, make_calc, points=15, fmax=0.02):
                               FixInternals(bondcombos=[[sum(targets), combo]])])
         energies.append(relax(atoms, fmax))
         images.append(atoms.positions.copy())
-    energies.append(e_p)
-    images.append(taut.positions.copy())
+    if found:
+        energies.append(e_p)
+        images.append(taut.positions.copy())
 
     e = (np.array(energies) - e_r)
     i_ts = int(np.argmax(e))
-    tautomer_is_minimum = sum(x_p) > 0 and 0 < i_ts < len(e) - 1
+    tautomer_is_minimum = found and 0 < i_ts < len(e) - 1
     masses = atoms.get_masses()
     s_ad = mass_weighted_path(images, masses)
     m_h = np.zeros(len(atoms))
@@ -146,6 +154,7 @@ def dpt_scan(atoms, triples, frozen, make_calc, points=15, fmax=0.02):
         "kappa_sudden": wkb_kappa(s_sd, e) if tautomer_is_minimum else None,
         "xi_reactant": [float(x) for x in x_r],
         "xi_tautomer": [float(x) for x in x_p],
+        "tautomer_found_by_optimisation": bool(found),
         "profile_kcal": [float(v * EV_TO_KCAL) for v in e],
         "X": [float((1 - f) * sum(x_r) + f * sum(x_p)) for f in fracs],
     }, images

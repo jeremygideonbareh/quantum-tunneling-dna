@@ -77,7 +77,8 @@ There are **512** pyrimidine-centred 5-mers, not about 1,000. Training ML on 32 
 - [x] Per-site rate tables: `data/processed/ecoli_rates_k{3,5}.csv`, `cosmic_sitewise_k3.csv`; baselines `dnakmerqm_B_k{3,5}.csv`
 - [x] DFT (B3LYP-D3/def2-SVP, PySCF) on the smoke-test scan path (`scripts/dft_check_scan.py`)
 - [x] Pre-registered analysis code written and locked behind the OSF URL (`scripts/preregistered_tests.py`)
-- [ ] Finish the 32-context gas-phase run, then repeat in ALPB water (`--env water`)
+- [x] 32-context gas-phase fingerprint (§4b): G\*:C\* well in all 16, A\*:T\* in none
+- [ ] Repeat in ALPB water (`--env water`)
 - [ ] DFT single points at reactant / maximum / tautomer for all 32 clusters (about 100 atoms each; needs the HPC allocation or about 2 days locally at def2-SVP)
 - [ ] 5-mer clusters (512) after the HPC reply
 - [ ] Tighten tautomer convergence (2 imaginary modes in the single-pair smoke test)
@@ -112,9 +113,38 @@ Unchanged: methods, figures, Zenodo DOI, bioRxiv, submission.
 | Single-proton ion pair G⁻C⁺ | Not a minimum; it relaxes back to G:C |
 | WKB κ (310 K), adiabatic / sudden | 1.04 / 2.56 |
 
+**DFT check** (B3LYP-D3(BJ)/def2-SVP single points on all 21 xTB scan geometries, PySCF; `results/smoke_gc/dft_b3lyp_def2svp.json`):
+
+| | GFN2-xTB | DFT | Δ |
+|---|---|---|---|
+| Barrier | 12.5 | 13.7 | +1.2 |
+| G\*:C\* energy | 10.1 | 9.6 | −0.5 |
+| Reverse barrier | 2.5 | 4.1 | +1.6 |
+
+The two profiles have the same shape and the maximum at the same point (X ≈ +0.33 Å). xTB slightly underestimates the barrier and the well depth, so the tautomer is a little *more* stable at the DFT level. This is one geometry; the context-ranking check across all 32 clusters is still needed (Phase 2).
+
 **Reading:** the tautomer sits in a well only about 2.5 kcal/mol deep. This is qualitatively what the DFT literature reports (a shallow, high-energy tautomer), and it is exactly why Change 1 tracks well depth and ZPE. The numbers are a pipeline check, **not a result**: one pair, no stacking, no solvent, semiempirical. The raw outputs are in `results/smoke_gc/`.
 
 ---
+
+## 4b. Fingerprint v1: all 32 contexts (2026-10-01, GFN2-xTB, gas phase)
+
+Capped 3-bp B-DNA clusters (`structures/k3/`), flanking pairs and C1′ caps frozen, 15-point relaxed scan along X = ξ₁ + ξ₂. Full table: `results/fingerprint_k3_gas.csv`; summary: `results/fingerprint_k3_gas.md`. **No comparison with mutation data has been made** (that waits for the OSF pre-registration).
+
+| | G:C → G\*:C\* (16 C-centred) | A:T → A\*:T\* (16 T-centred) |
+|---|---|---|
+| Tautomer is a minimum (well > RT) | **16 / 16** | **0 / 16** (best: ATG, 0.35 kcal/mol, below RT) |
+| Tautomer energy ΔE (kcal/mol) | 9.3 – 11.1 | 8.6 – 11.0 (energy at the mirror geometry; no well) |
+| Forward barrier (kcal/mol) | 11.7 – 13.5 | n/a; the energy rises monotonically |
+| Reverse barrier (kcal/mol) | 1.7 – 3.2 | 0 |
+| κ sudden (310 K) | 2.1 – 3.6 | undefined (κ = 1 rule) |
+| Spread in F (forward-rate proxy) | 15-fold (ACT lowest, CCC highest) | 49-fold (TTC lowest, ATA highest) |
+
+**What this means**
+1. **Context matters.** Neighbouring pairs shift the G:C barrier by about 1.8 kcal/mol and the tautomer energy by about 1.8 kcal/mol. That corresponds to roughly a 15-fold spread in the forward rate, which is large enough to be testable against the 18-fold (non-CpG C>T) spread in E. coli replication-error rates.
+2. **A\*:T\* does not exist as a stable tautomer at this level, in any context.** The protons slide back without a barrier, which matches Gheorghiu et al. 2020 (single proton transfer is preferred in A:T). Canonical-pair double proton transfer therefore cannot explain T>C errors here. For H2, F reduces to the energy cost of the A\*:T\* geometry. **Decision for Nazia before posting on OSF:** keep H2 as is, or replace it with the single-proton-transfer (half-way, X ≈ 0) energy, or with the G•T wobble route (Slocombe 2023 / Al-Hashimi). Decide this *before* looking at any correlation.
+3. **Method caveats:** gas phase, frozen frame, semiempirical. Next steps are the ALPB-water rerun (`--env water`) and DFT single points at the stationary points for all 32 clusters (needs HPC), to check that the context **ranking** survives.
+4. **Protocol fix made today (before any outcome analysis):** when the free optimisation finds no tautomer (both ξ > 0.4 Å), the scan now runs to the mirror point and flags the context. The first A:T attempt, made without this rule, gave degenerate scans; those outputs are kept out of the results.
 
 ## 5. Risks
 

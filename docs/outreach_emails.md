@@ -35,7 +35,7 @@ Send from your own addresses. Attach `docs/one_page_summary.md` exported as a PD
 >
 > Your 2022 papers showed that tunnelling and strand separation matter. Two quick questions:
 > (1) Is a 1D WKB estimate on the scanned profile a defensible proxy for your open-quantum-systems rates, if we only need the **ranking** across contexts?
-> (2) Would you expect neighbouring pairs to shift the barrier enough to matter (we see differences under 1 kcal/mol so far)?
+> (2) Would you expect neighbouring pairs to shift the barrier enough to matter (in our gas-phase xTB clusters the G:C barrier spans 11.7–13.5 kcal/mol across the 16 contexts, and A\*:T\* is never a minimum)?
 >
 > One-page summary attached. Thank you for any pointers.
 > Jeremy Bareh and Nazia [surname]

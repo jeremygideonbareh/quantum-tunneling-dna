@@ -11,7 +11,7 @@
 2. **Outcomes:** per-site transition rates (counts ÷ genome occurrences) from 120,208 *E. coli* MA mutations (Jago et al. PNAS 2026; Foster 2018; Niccum 2018), yeast msh2Δ (Lujan 2014), human MMR knockouts (Zou 2021) and COSMIC MMR/POLE signatures.
 3. **Tests (pre-registered on OSF before any fingerprint–mutation comparison):** within-centre Spearman correlations, cross-species meta-analysis, and nested models against baselines (Al-Hashimi G•T⁻, DNAkmerQM QM features, duplex stability).
 
-**Status (1 Oct 2026).** Pipeline running end to end: B-DNA cluster builder, xTB scans, WKB, DFT check, per-site rate tables for *E. coli* and COSMIC. Single G:C pair (xTB): G\*:C\* at +10 kcal/mol with only a 2–3 kcal/mol reverse barrier.
+**Status (1 Oct 2026).** Pipeline running end to end: B-DNA cluster builder, xTB scans, WKB, DFT check, per-site rate tables for *E. coli* and COSMIC. Fingerprint v1 for all 32 contexts: G\*:C\* is a shallow tautomer (+9.3–11.1 kcal/mol, reverse barrier 1.7–3.2) whose forward barrier spans 1.8 kcal/mol across contexts (about 15-fold in rate). A\*:T\* is never a stable minimum. A DFT check (B3LYP-D3) reproduces the xTB profile shape within about 1.5 kcal/mol.
 
 **Outputs.** bioRxiv preprint by March 2027; code and data on GitHub and Zenodo. A null result is publishable: it would be the first quantitative test of the tautomer hypothesis against mutation data.
 

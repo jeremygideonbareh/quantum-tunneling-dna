@@ -3,7 +3,7 @@
 ## Fingerprint (fixed in advance)
 Per pyrimidine-centred context, from capped 3-bp B-DNA clusters (flanking pairs and C1′ caps frozen), GFN2-xTB, relaxed scan along X = ξ₁ + ξ₂:
 
-- **Primary:** forward tautomerisation rate proxy, `F = ln κ_sudden − ΔE‡ / RT` (T = 310 K). If the tautomer is not a minimum, κ is undefined; set κ = 1 and keep the context (flagged).
+- **Primary:** forward tautomerisation rate proxy, `F = ln κ_sudden − ΔE‡ / RT` (T = 310 K). If there is no tautomer well deeper than RT (0.62 kcal/mol), κ is undefined; set κ = 1 and keep the context (flagged). Rule added 2026-10-01 after the A:T scans showed no or very shallow wells (ATG: 0.35 kcal/mol), and **before** any comparison with mutation data.
 - Secondary: (a) tautomer population `−ΔE / RT`; (b) reverse barrier ΔE‡_rev, i.e. tautomer survival; (c) the same three quantities in ALPB water.
 - If the rank correlation between xTB and DFT values across contexts is below 0.7, the DFT values replace the xTB ones (decided before looking at mutation data).
 

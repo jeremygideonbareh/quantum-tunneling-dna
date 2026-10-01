@@ -26,10 +26,11 @@ PROOF_SIGS = ["SBS10a", "SBS10b", "SBS10c", "SBS10d"]
 def primary_feature(fp: pd.DataFrame) -> pd.Series:
     """F = ln(kappa_sudden) - dE_barrier / RT (pre-registered primary).
 
-    Where the tautomer is not a minimum, kappa is undefined; use kappa = 1
-    (pre-registered rule) and keep the context.
+    Where there is no tautomer well deeper than RT, kappa is undefined; use
+    kappa = 1 (pre-registered rule) and keep the context.
     """
     kappa = fp["kappa_sudden"].astype(float).fillna(1.0)
+    kappa[fp["reverse_barrier_kcal"] < KT] = 1.0
     return np.log(kappa) - fp["barrier_kcal"] / KT
 
 
